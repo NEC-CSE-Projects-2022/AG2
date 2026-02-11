@@ -42,7 +42,7 @@ def inject_version():
     return dict(version=time.time())
 
 DATABASE = "users.db"
-MODEL_PATH = "cnn_bilstm_attention().pth"
+MODEL_PATH = "cnn_bilstm_attention.pth"
 SCALER_PATH = "scaler.pkl"
 INPUT_DIM = 53
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -464,4 +464,5 @@ if __name__ == "__main__":
     init_db()
     torch.set_num_threads(1)
     app.run(debug=True)
+
 
