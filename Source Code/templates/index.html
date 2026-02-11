@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis - Accident Severity </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ version }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <header class="header-nav">
+            <div class="logo">
+                <h1>Accident Severity <span class="highlight"></span></h1>
+            </div>
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('index') }}" class="active">Predict</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('logout') }}" style="color: #fca5a5;">Logout</a>
+            </nav>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert {{ category is defined and category =='danger' and 'error' or '' }}"></div>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if prediction_text %}
+    <div class="alert error">
+        {{ prediction_text }}
+    </div>
+    {% endif %}
+
+    <!-- BULK UPLOAD SECTION -->
+    <div class="bulk-upload-section">
+        <h3 style="margin-top: 0;">📂 Bulk Prediction</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Upload a CSV or Excel file to
+            predict multiple records at once.</p>
+        <form action="{{ url_for('bulk_predict') }}" method="POST" enctype="multipart/form-data"
+            style="display: flex; gap: 1rem; align-items: center;">
+            <input type="file" name="file" accept=".csv, .xlsx" required style="color: white;">
+            <button type="submit" class="btn-secondary" style="padding: 0.5rem 1.5rem;">Upload & Predict</button>
+        </form>
+    </div>
+
+    <form action="{{ url_for('predict') }}" method="POST">
+        <h3 style="margin-bottom: 1.5rem;">Single Prediction</h3>
+        <div class="input-grid">
+
+            <div class="input-group">
+                <label for="Speed">Speed Limit</label>
+                <input type="number" id="Speed" name="Speed" required placeholder="e.g. 50">
+            </div>
+
+            <div class="input-group">
+                <label for="Weather">Weather Conditions</label>
+                <select id="Weather" name="Weather"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="Clear">Clear</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Snowy">Snowy</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="DayOfWeek">Day of Week</label>
+                <select id="DayOfWeek" name="DayOfWeek"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+            <div class="input_group">
+                <label class="form-label">Age of Vehicle</label>
+                <input type="number" class="form-control" name="Age_of_Vehicle" min="0" placeholder="Enter vehicle age"
+                    required>
+            </div>
+            <div class="input-group">
+                <label class="form-label">Age of Driver</label>
+                <input type="number" class="form-control" name="Age_of_Driver" min="1" placeholder="Enter positive age"
+                    required>
+            </div>
+            <div class="input-group">
+                <label for="Vehicle Type">Vehicle Type</label>
+                <select id="Vehicle Type" name="Vehicle Type"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="">Select Vehicle Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Bus">Bus</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="Road Type">Road Type</label>
+                <select id="Road Type" name="Road Type"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="">Select Road Type</option>
+                    <option>Single carriageway</option>
+                    <option>Dual carriageway</option>
+                    <option>Roundabout</option>
+                </select>
+            </div>
+
+
+            <div class="input-group">
+                <label for="LightCondition">Light Conditions</label>
+                <select id="LightCondition" name="LightCondition"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="Daylight">Daylight</option>
+                    <option value="Dark">Dark</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="form-label">Engine Capacity (CC)</label>
+                <input type="number" class="form-control" name="Engine_Capacity_CC" min="1"
+                    placeholder="Enter positive engine CC" required>
+            </div>
+
+            <div class="input-group">
+                <label for="RoadSurface">Road Surface</label>
+                <select id="RoadSurface" name="RoadSurface"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="Dry">Dry</option>
+                    <option value="Wet">Wet</option>
+                    <option value="Snow/Ice">Snow/Ice</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="Junction_Detail">Junction_Detail</label>
+                <select id="Junction_Detail" name="Junction_Detail"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+
+                    <option>Not at junction</option>
+                    <option>Crossroads</option>
+                    <option>T-junction</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+
+                <label for="Gender">Gender</label>
+                <select id="Gender" name="Gender"
+                    style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-family: inherit; font-size: 1rem;">
+                    <option value="Select Gender">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="Hour">Hour of Day (0–23)</label>
+                <input type="number" id="Hour" name="Hour" min="0" max="23" required placeholder="e.g. 14">
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <span>Analyze Risk</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </form>
+
+    <!-- PREDICTION HISTORY -->
+    <div class="history-section">
+        <h3>📋 Prediction History</h3>
+        {% if predictions %}
+        <div style="overflow-x: auto;">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Input Data (Summary)</th>
+                        <th>Predicted Severity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for input_data, prediction, timestamp in predictions %}
+                    <tr>
+                        <td style="font-size: 0.9rem; color: var(--text-muted);">{{ timestamp }}</td>
+                        <td style="font-family: monospace; font-size: 0.85rem;">{{ input_data[:50] }}...</td>
+                        <td>
+                            <span
+                                class="{{ 'fatal-severity' if prediction == 'Fatal' else 'serious-severity' if prediction == 'Serious' else 'slight-severity' }}"
+                                style="padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.85rem; font-weight: bold;">
+                                {{ prediction }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p style="color: var(--text-muted);"></p>
+        {% endif %}
+    </div>
+
+    </div>
+</body>
+
+</html>
