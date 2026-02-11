@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accident Severity Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ version }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <header class="header-nav">
+            <div class="logo">
+                <h1>Accident Severity <span class="highlight"></span></h1>
+            </div>
+            <nav>
+                <a href="{{ url_for('home') }}" class="active">Home</a>
+                <a href="{{ url_for('index') }}">Predict</a>
+                <a href="{{ url_for('history') }}">History</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('about') }}">About</a>
+                {% if session.get('logged_in') %}
+                <a href="{{ url_for('logout') }}" style="color: #fca5a5;">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert {{ category is defined and category =='danger' and 'error' or '' }}">
+            {{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="hero">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Advanced Traffic Accident Severity Prediction</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem;">
+                Leveraging state-of-the-art Deep Learning (CNN + BiLSTM + Attention) to predict accident outcomes and
+                enhance road safety.
+            </p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <a href="{{ url_for('login') }}" class="btn-primary"
+                    style="text-decoration: none; padding: 1rem 2rem; border-radius: 12px; color: white;">Login / Get
+                    Started</a>
+                <a href="{{ url_for('register') }}" class="btn-secondary"
+                    style="text-decoration: none; padding: 1rem 2rem; border-radius: 12px; color: white;">Register New
+                    Account</a>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
