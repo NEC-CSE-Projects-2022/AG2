@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result - Accident Severity </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ version }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <header class="header-nav">
+            <div class="logo">
+                <h1>Accident Severity <span class="highlight"></span></h1>
+            </div>
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('index') }}">Predict</a>
+                <a href="{{ url_for('history') }}">History</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('about') }}">About</a>
+                {% if session.get('logged_in') %}
+                <a href="{{ url_for('logout') }}" style="color: #fca5a5;">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <header style="text-align: center; margin-bottom: 2rem;">
+            <h1>Prediction Result</h1>
+        </header>
+
+        <div id="result"
+            class="result-card {{ 'fatal-severity' if prediction == 'Fatal' else 'serious-severity' if prediction == 'Serious' else 'slight-severity' }}">
+            <div class="result-header">Estimated Severity</div>
+            <div class="severity-display">
+                <span class="sev-value">{{ prediction }}</span>
+            </div>
+
+            <div class="confidence-display">
+                Confidence: <span id="confidenceValue">{{ confidence }}%</span>
+            </div>
+
+            {% if plot_url %}
+            <div class="graph-container" style="margin-top: 2rem;">
+                <h3 style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem;">Feature Contribution
+                    Analysis</h3>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="SHAP Feature Importance"
+                    style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="{{ url_for('index') }}" class="btn-primary"
+                style="padding: 1rem 2rem; text-decoration: none; color: white;">Analyze Another Case</a>
+        </div>
+        <div style="margin-top: 1rem;">
+            <a href="{{ url_for('logout') }}" style="color: var(--text-muted); font-size: 0.9rem;">Logout</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About/Contact/Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ version }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="header-nav">
+            <div class="logo">
+                <h1>Accident Severity <span class="highlight"></span></h1>
+            </div>
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('index') }}">Predict</a>
+                <a href="{{ url_for('history') }}">History</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('about') }}" class="active">About</a>
+                {% if session.get('logged_in') %}
+                <a href="{{ url_for('logout') }}" style="color: #fca5a5;">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <h2>About Our System</h2>
+        <p>
+            The <strong>Accident Severity Prediction System</strong> is designed to analyze real-world accident data and
+            predict
+            whether a road accident is <b>Slight</b>, <b>Serious</b>, or <b>Fatal</b>.
+            This solution helps authorities take preventive measures and enhances road safety using AI.
+        </p>
+
+        <h3 class="section-title">✨ Key Features</h3>
+        <div class="features">
+            <div class="feature-card">
+                <span>🚗</span>
+                <h4>Accurate Predictions</h4>
+                <p>Uses CNN + BiLSTM + Attention model with DeepSHAP explainability.</p>
+            </div>
+            <div class="feature-card">
+                <span>📊</span>
+                <h4>Real-Time Processing</h4>
+                <p>Predict accident severity instantly with optimized backend.</p>
+            </div>
+            <div class="feature-card">
+                <span>🔐</span>
+                <h4>Secure Login</h4>
+                <p>Encrypted account handling with personalized access.</p>
+            </div>
+            <div class="feature-card">
+                <span>⚙️</span>
+                <h4>Deep Learning Engine</h4>
+                <p>Powerful PyTorch model replicating IEEE research architecture.</p>
+            </div>
+        </div>
+
+        <h3 class="section-title">🚀 Our Development Journey</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>📅 Phase 1 – Research & Dataset </h4>
+                <p>Collected and analyzed UK and us traffic accident dataset with preprocessing.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>🧠 Phase 2 – Model Engineering</h4>
+                <p>Implemented CNN + BiLSTM + Attention model from base IEEE paper.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>📈 Phase 3 – Training & Evaluation</h4>
+                <p>10-Fold Cross Validation, SHAP explainability, performance tuning.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>🌐 Phase 4 – Web Deployment</h4>
+                <p>Developed Flask interface with secure login and prediction dashboard.</p>
+            </div>
+        </div>
+
+        <h3 class="section-title">👥 Our Team</h3>
+        <div class="team-box">
+            <h4>Thirupatamma Kallam</h4>
+            <p>Lead Developer, Researcher, Deep Learning Engineer, Frontend Designer</p>
+        </div>
+
+        <p>
+            Want to collaborate or learn more?
+            Visit our <a href="{{ url_for('contact') }}" style="color:#ffdd55;">Contact Page</a>.
+        </p>
+
+
+
+        <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+
+</html>
